@@ -4,10 +4,11 @@ metadata:
   name: ingress-service
   annotations:
     kubernetes.io/ingress.class: nginx
+    # Tell nginx that path below will have regular expression
     nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
   rules:
-    # A made up domain name that only work locally
+    # A made up domain name that only from locally
     - host: ticketing.dev
       http:
         paths:
