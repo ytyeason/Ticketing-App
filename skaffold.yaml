@@ -1,0 +1,27 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      # List out all the directories or files we want to sync
+      - ./infra/k8s/*
+build:
+  local:
+    # Whenever we push, we do not want to push to dockerhub
+    push: false
+  artifacts:
+    # List out the image that's going to be produced by that auth project
+    - image: easonyty/auth
+      # Context/folder that contains all the code for this image
+      context: auth
+      # The docker file to use
+      docker:
+        dockerfile: Dockerfile
+      # Tell scaffold how to handle any files that changes inside auth folder
+      sync:
+        # What to do when some files changes 
+        manual:
+          - src: 'src/**/*.ts'
+            # This is where to sync this file to inside our running container,
+            # the dot means take whereever the file was found from and throw it to the corresponding part inside container.
+            dest: .

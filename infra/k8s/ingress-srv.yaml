@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+    # A made up domain name that only work locally
+    - host: ticketing.dev
+      http:
+        paths:
+          # Any time a request with this path comes to cluster, it will forward it to the backend
+          - path: /api/users/?(.*)
+            backend:
+              # auth-service is defined in auth-depl.yaml Service
+              serviceName: auth-srv
+              servicePort: 3000

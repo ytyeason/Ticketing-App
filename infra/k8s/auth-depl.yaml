@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec:
+  # the number of services we want to run
+  replicas: 1
+  # Tell the deployment how to find all the pods that it's going to create
+  selector:
+    matchLabels:
+      app: auth
+  # How to create each individual pod that this deployment is going to create.
+  template:
+    metadata:
+      labels:
+        # The selector label needs to match the name here.
+        app: auth
+    # Tell the pod how to behave
+    spec:
+      # Designate all the containers that are going to be running inside this pod.
+      containers:
+        # This name is only important for loggin purposes
+        - name: auth
+          # Image name that we just created
+          image: easonyty/auth
+---
+# Define a service to go along with the deployment 
+apiVersion: v1
+kind: Service
+# Did not define a type for this service
+# This is a default service: cluster-ip service
+# A cluster IP service is going to allow communication to the service from anything else running only inside of our cluster
+metadata:
+  name: auth-srv
+# Tell the service how to behave
+spec:
+  # Tell this service how to find the set of pods that is supposed to govern access to
+  selector:
+    app: auth
+  # All the different ports that we want to expose from that pod
+  ports: 
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+
