@@ -19,7 +19,7 @@ spec:
     spec:
       # Designate all the containers that are going to be running inside this pod.
       containers:
-        # This name is only important for loggin purposes
+        # This name is only important for logging purposes
         - name: auth
           # Image name that we just created
           image: easonyty/auth
